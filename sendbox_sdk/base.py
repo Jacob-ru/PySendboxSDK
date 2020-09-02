@@ -34,7 +34,7 @@ class ApiBase:
         }
         result = self._post_request(METHOD_PATHS.auth, params, token_required=False)
         self._auth_token = result['access_token']
-        self._token_expire_time = current_time + dt.timedelta(minutes=result['expires_in'])
+        self._token_expire_time = current_time + dt.timedelta(seconds=result['expires_in'])
 
 
     def _make_request(self, request_type: str,
