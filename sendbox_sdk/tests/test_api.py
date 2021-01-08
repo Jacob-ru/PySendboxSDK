@@ -51,3 +51,21 @@ class TestSendBoxApi:
              patch.object(api, '_token_renew_required', return_value=False):
             res = api.emails_total()
             assert res['total'] == 10
+
+    def test_raw_message_send(self):
+        api = self.get_api()
+        api._auth_token = 'token'
+        request_mock = Mock(
+            status_code=200,
+            json=Mock(return_value={'result': True})
+        )
+        with patch('requests.request', return_value=request_mock), \
+             patch.object(api, '_token_renew_required', return_value=False):
+            res = api.send_html_email(subject="SUBJECT",
+                                      from_email="sender@example.com",
+                                      from_name="Sender",
+                                      to_email="reciever@example.com",
+                                      to_name="Reciever",
+                                      html="Hellow<br>World",
+                                      text="Hello World!")
+            assert res
